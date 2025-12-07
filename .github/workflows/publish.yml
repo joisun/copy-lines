@@ -75,7 +75,7 @@ jobs:
             vsce publish -p "$VSCE_TOKEN" --no-dependencies
           fi
         env:
-          VSCE_TOKEN: ${{ secrets.VSCE_PAT }} 
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }} 
           # Note: Ensure your secret is named VSCE_PAT or update this line to VSCE_TOKEN
 
       - name: Publish to OpenVSX Registry (Cursor Marketplace)
