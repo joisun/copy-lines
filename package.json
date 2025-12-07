@@ -1,0 +1,51 @@
+{
+  "name": "copy-lines",
+  "displayName": "Copy Lines",
+  "description": "Quickly copy code references and blocks with context for AI tools.",
+  "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copy-lines.copyRefer",
+        "title": "Copy Reference",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "copy-lines.copyBlock",
+        "title": "Copy Block",
+        "icon": "$(copy)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "typescript": "^5.1.6",
+    "ts-loader": "^9.4.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "vsce": "^2.15.0"
+  }
+}
