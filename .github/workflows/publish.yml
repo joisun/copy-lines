@@ -53,7 +53,7 @@ jobs:
       - name: Compile project
         run: pnpm run compile
 
-      # CRITICAL FIX: Remove the prepublish script so vsce doesn't try to use npm to build/verify
+      # Remove prepublish to prevent unwanted npm lifecycle scripts
       - name: Disable prepublish script
         run: npm pkg delete scripts.vscode:prepublish
 
@@ -72,10 +72,11 @@ jobs:
 
       - name: Publish to VS Code Marketplace
         run: |
+          # Use the pre-packaged VSIX file to skip dependency checks
           if [ "${{ github.event.inputs.release_type }}" = "pre-release" ]; then
-            vsce publish --pre-release -p "$VSCE_TOKEN" --no-dependencies
+            vsce publish --pre-release --packagePath *.vsix -p "$VSCE_TOKEN"
           else
-            vsce publish -p "$VSCE_TOKEN" --no-dependencies
+            vsce publish --packagePath *.vsix -p "$VSCE_TOKEN"
           fi
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }} 
@@ -83,10 +84,11 @@ jobs:
       - name: Publish to OpenVSX Registry (Cursor Marketplace)
         if: github.event.inputs.publish_to_openvsx == 'true'
         run: |
+          # Pass the VSIX file directly
           if [ "${{ github.event.inputs.release_type }}" = "pre-release" ]; then
-            ovsx publish --pre-release -p "$OVSX_TOKEN"
+            ovsx publish *.vsix --pre-release -p "$OVSX_TOKEN"
           else
-            ovsx publish -p "$OVSX_TOKEN"
+            ovsx publish *.vsix -p "$OVSX_TOKEN"
           fi
         env:
           OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
