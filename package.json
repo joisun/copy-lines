@@ -4,6 +4,11 @@
   "description": "Quickly copy code references and blocks with context for AI tools.",
   "version": "0.0.1",
   "publisher": "sunzhongyi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joisun/copy-lines.git"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
