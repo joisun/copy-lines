@@ -53,6 +53,10 @@ jobs:
       - name: Compile project
         run: pnpm run compile
 
+      # CRITICAL FIX: Remove the prepublish script so vsce doesn't try to use npm to build/verify
+      - name: Disable prepublish script
+        run: npm pkg delete scripts.vscode:prepublish
+
       - name: Install VSCE and OVSX
         run: |
           npm install -g @vscode/vsce
@@ -65,7 +69,6 @@ jobs:
           else
             vsce package --no-dependencies
           fi
-        # Note: --no-dependencies prevents vsce from re-running npm/pnpm list, assuming we built correctly.
 
       - name: Publish to VS Code Marketplace
         run: |
@@ -76,7 +79,6 @@ jobs:
           fi
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }} 
-          # Note: Ensure your secret is named VSCE_PAT or update this line to VSCE_TOKEN
 
       - name: Publish to OpenVSX Registry (Cursor Marketplace)
         if: github.event.inputs.publish_to_openvsx == 'true'
