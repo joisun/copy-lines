@@ -3,13 +3,14 @@
   "displayName": "Copy Lines",
   "description": "Quickly copy code references and blocks with context for AI tools.",
   "version": "0.0.1",
-  "publisher": "your-publisher-name",
+  "publisher": "sunzhongyi",
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
     "Other"
   ],
+  "icon": "icon.png",
   "activationEvents": [
     "onStartupFinished"
   ],
