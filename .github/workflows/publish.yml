@@ -53,10 +53,6 @@ jobs:
       - name: Compile project
         run: pnpm run compile
 
-      # CRITICAL FIX: Remove the prepublish script so vsce doesn't try to use npm to build/verify
-      - name: Disable prepublish script
-        run: npm pkg delete scripts.vscode:prepublish
-
       - name: Install VSCE and OVSX
         run: |
           npm install -g @vscode/vsce
@@ -72,22 +68,34 @@ jobs:
 
       - name: Publish to VS Code Marketplace
         run: |
-          if [ "${{ github.event.inputs.release_type }}" = "pre-release" ]; then
-            vsce publish --pre-release -p "$VSCE_TOKEN" --no-dependencies
-          else
-            vsce publish -p "$VSCE_TOKEN" --no-dependencies
+          VSIX_FILE=$(ls *.vsix | head -n 1)
+          
+          if [ -z "$VSIX_FILE" ]; then
+            echo "❌ No .vsix file found!"
+            exit 1
           fi
+          
+          echo "📦 Publishing $VSIX_FILE to VS Code Marketplace"
+          vsce publish --packagePath "$VSIX_FILE" -p "$VSCE_TOKEN"
+          
+          echo "✅ Successfully published to VS Code Marketplace"
         env:
-          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }} 
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
 
       - name: Publish to OpenVSX Registry (Cursor Marketplace)
         if: github.event.inputs.publish_to_openvsx == 'true'
         run: |
-          if [ "${{ github.event.inputs.release_type }}" = "pre-release" ]; then
-            ovsx publish --pre-release -p "$OVSX_TOKEN"
-          else
-            ovsx publish -p "$OVSX_TOKEN"
+          VSIX_FILE=$(ls *.vsix | head -n 1)
+          
+          if [ -z "$VSIX_FILE" ]; then
+            echo "❌ No .vsix file found!"
+            exit 1
           fi
+          
+          echo "📦 Publishing $VSIX_FILE to OpenVSX Registry"
+          ovsx publish "$VSIX_FILE" -p "$OVSX_TOKEN"
+          
+          echo "✅ Successfully published to OpenVSX"
         env:
           OVSX_TOKEN: ${{ secrets.OVSX_TOKEN }}
         continue-on-error: true
