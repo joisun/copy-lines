@@ -1,6 +1,8 @@
 # Copy Lines for VS Code
 
-A lightweight extension designed to help you quickly copy code context for AI chats (like ChatGPT, Claude, or Cursor).
+![doc.gif](./doc.gif)
+
+A lightweight extension designed to help you quickly copy code context in Github permalink style for AI chats (like ChatGPT, Claude, or Cursor).
 
 ## Features
 
