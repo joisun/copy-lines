@@ -30,6 +30,24 @@ export class SelectionCodeLensProvider implements vscode.CodeLensProvider {
             return [];
         }
 
+        // Filter out partial line selections:
+        // Show if multi-line OR single-line but covers the full content
+        const isMultiLine = !selection.isSingleLine;
+        let isCompleteLine = false;
+
+        if (!isMultiLine) {
+            const line = document.lineAt(selection.start.line);
+            const selectedText = document.getText(selection);
+            // Check if selection matches the line content (ignoring leading/trailing whitespace)
+            if (selectedText.trim() === line.text.trim() && selectedText.trim().length > 0) {
+                isCompleteLine = true;
+            }
+        }
+
+        if (!isMultiLine && !isCompleteLine) {
+            return [];
+        }
+
         const range = selection;
 
         // Position the CodeLens at the top of the selection/line
@@ -38,7 +56,7 @@ export class SelectionCodeLensProvider implements vscode.CodeLensProvider {
 
         // 1. Command: Refer
         const referCommand: vscode.Command = {
-            title: "$(copy) Copy Refer",
+            title: "$(link) Copy Refer",
             tooltip: "Copy path and line reference",
             command: "copy-lines.copyRefer",
             arguments: [document, range]
@@ -46,7 +64,7 @@ export class SelectionCodeLensProvider implements vscode.CodeLensProvider {
 
         // 2. Command: Block
         const blockCommand: vscode.Command = {
-            title: "$(copy) Copy Block",
+            title: "$(file-code) Copy Block",
             tooltip: "Copy path, lines, and code block",
             command: "copy-lines.copyBlock",
             arguments: [document, range]

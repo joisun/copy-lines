@@ -25,12 +25,12 @@
       {
         "command": "copy-lines.copyRefer",
         "title": "Copy Reference",
-        "icon": "$(copy)"
+        "icon": "$(link)"
       },
       {
         "command": "copy-lines.copyBlock",
         "title": "Copy Block",
-        "icon": "$(copy)"
+        "icon": "$(file-code)"
       }
     ],
     "configuration": {
