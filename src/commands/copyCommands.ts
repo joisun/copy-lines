@@ -26,7 +26,7 @@ export async function copyBlock(document: vscode.TextDocument, range: vscode.Ran
     const languageId = document.languageId;
 
     // Format: path + markdown block
-    const textToCopy = `${relativePath}${lineSuffix}\n\`\`\`${languageId}\n${codeContent}\n\`\`\``;
+    const textToCopy = `${relativePath}${lineSuffix}\n\`\`\`${languageId}\n${codeContent}\n\`\`\`\n`;
 
     await vscode.env.clipboard.writeText(textToCopy);
     vscode.window.setStatusBarMessage(`$(check) Block copied!`, 3000);
